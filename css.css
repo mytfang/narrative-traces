@@ -67,6 +67,13 @@ body {
     padding-bottom: 10vh;
 }
 
+@media only screen and (max-width: 480px) {
+    body {
+        width: 95%;
+    }
+}
+
+
 p {
     margin-bottom: 1em;
 }
