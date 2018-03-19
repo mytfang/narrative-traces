@@ -71,7 +71,7 @@
 
                 <li class="field">
                     <p>Once upon a time</p>
-                    <input name="once" type="text" placeholder="Type here">
+                    <textarea name="once" type="text" placeholder="Type here"></textarea>
                 </li>
 
 
@@ -82,24 +82,24 @@
 
                 <li class="field">
                     <p>There are times when</p>
-                    <input name="there-are-times" type="text" placeholder="Type here">
+                    <textarea name="there-are-times" type="text" placeholder="Type here"></textarea>
                 </li>
 
 
                 <li class="field">
                     <p>It was</p>
-                    <input name="it-was" type="text" placeholder="Type here">
+                    <textarea name="it-was" type="text" placeholder="Type here"></textarea>
                 </li>
 
 
                 <li class="field">
                     <p>Don't</p>
-                    <input name="dont" type="text" placeholder="Type here">
+                    <textarea name="dont" type="text" placeholder="Type here"></textarea>
                 </li>
 
                 <li class="field">
                     <p>Sometimes I</p>
-                    <input name="sometimes" type="text" placeholder="Type here">
+                    <textarea name="sometimes" type="text" placeholder="Type here"></textarea>
                 </li>
 
                 <li class="field">
@@ -184,7 +184,6 @@
 
 
 
-
         //This span is used to measure the size of the textarea
         //it should have the same font and text with the textarea and should be hidden
         var span = $('<span>').css('display', 'inline-block')
@@ -200,7 +199,7 @@
             input: function() {
                 var text = $(this).val();
                 span.text(text);
-                $(this).height(text ? span.height() : '1.1em');
+                $(this).height(text ? span.height() : '2.5em');
             },
             focus: function() {
                 initSpan($(this));

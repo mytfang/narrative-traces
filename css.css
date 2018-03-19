@@ -283,12 +283,12 @@ textarea {
     border: 0;
     font-size: inherit;
     line-height: inherit;
-    padding: .75rem .75rem .25rem 0;
+    padding: .75rem 0 0 0;
     margin-bottom: 2.25rem;
-
     font-family: var(--accentfont);
     font-size: 1em;
-    color: var(--darkgray)
+    line-height: 1.5em;
+    color: var(--darkgray);
 }
 
 input:focus,
@@ -300,6 +300,7 @@ textarea:focus {
 
 textarea {
     width: calc(100% - 30px);
+    margin-top: .75em;
     resize: none;
     overflow: hidden;
     height: 1.5em;
