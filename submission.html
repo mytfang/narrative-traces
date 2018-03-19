@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="My Name">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Narrative Traces: Submit</title>
+
+
+    <link rel="stylesheet" href="css.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata|Merriweather" rel="stylesheet">
+
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+
+
+    <script src="https://unpkg.com/prefixfree@1.0.0/prefixfree.min.js"></script>
+
+    <script src="https://wzrd.in/standalone/formdata-polyfill@latest"></script>
+    <script src="https://wzrd.in/standalone/promise-polyfill@latest"></script>
+    <script src="https://wzrd.in/standalone/whatwg-fetch@latest"></script>
+
+</head>
+
+
+
+
+<body>
+
+    <a href="index.html" class="close">back</a>
+
+    <section class="introduction">
+        <div class="sectionheader">
+            <h2><span>Instructions for Submission</span></h2>
+        </div>
+
+
+        <div class="sectiontext">
+            <p>Begin by typing the provided starting words, and then let predictive text take over the writing. There will typically be three options to choose from; keep tapping the predicted words until you are satisfied with your story. </p>
+
+            <p>Punctuation is not required, but can be added as you see fit.
+            </p>
+        </div>
+
+<div class="sectiontext instructions">
+    <p><strong>To enable predictive text on iPhone</strong></p>
+
+    <ol class="options-list">
+        <li>On the keyboard, touch and hold the emoji icon or globe icon, then tap Predictive.</li>
+        <li>Go to Settings > General > Keyboard > Predictive.</li>
+    </ol>
+</div>
+    </section>
+
+
+    <div class="form-container">
+
+        <form name="submit-to-google-sheet">
+            <ol>
+                <li class="field">
+                    <p>Name / Alias</p>
+                    <input name="name" type="text" placeholder="Type here" required />
+                </li>
+
+                <li class="field">
+                    <p>Once upon a time</p>
+                    <input name="one" type="text" placeholder="Type here">
+                </li>
+
+                <li class="field">
+                    <p>It was</p>
+                    <input name="two" type="text" placeholder="Type here">
+                </li>
+
+                <li class="field">
+                    <p>There are times when</p>
+                    <input name="three" type="text" placeholder="Type here">
+                </li>
+
+                <li class="field">
+                    <p>Don't</p>
+                    <input name="four" type="text" placeholder="Type here">
+                </li>
+
+                <li class="field">
+                    <p>Sometimes I</p>
+                    <input name="five" type="text" placeholder="Type here">
+                </li>
+
+                <li class="field">
+                    <p>My friends and I</p>
+                    <textarea name="six" placeholder="Type here"></textarea>
+                </li>
+            </ol>
+
+            <button type="submit" id="submit">Submit</button>
+        </form>
+
+
+
+        <div class="loading js-loading is-hidden">
+            <div class="loading-spinner">
+                <svg>
+                    <circle cx="25" cy="25" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+                </svg>
+            </div>
+        </div>
+
+        <p class="js-success-message is-hidden">Success!</p>
+        <p class="js-error-message is-hidden">Error!</p>
+
+    </div>
+
+
+    <a href="https://docs.google.com/spreadsheets/d/1XrwYlCmQhMQ-MTAB8sJOj52ikc5c_qoG0LOPriqwiZE/edit#gid=0" target="_blank">View the Google Sheet</a>
+
+
+
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwN9xDW4fhcKXsYz09L2jba4arKDsnot-H2szNagU5cmqg44Ds/exec'
+        const form = document.forms['submit-to-google-sheet']
+        const loading = document.querySelector('.js-loading')
+        const successMessage = document.querySelector('.js-success-message')
+        const errorMessage = document.querySelector('.js-error-message')
+
+        form.addEventListener('submit', e => {
+            e.preventDefault()
+            showLoadingIndicator()
+            fetch(scriptURL, {
+                    method: 'POST',
+                    body: new FormData(form)
+                })
+                .then(response => showSuccessMessage(response))
+                .catch(error => showErrorMessage(error))
+        })
+
+        function showLoadingIndicator() {
+            form.classList.add('is-hidden')
+            loading.classList.remove('is-hidden')
+        }
+
+        function showSuccessMessage(response) {
+            console.log('Success!', response)
+            setTimeout(() => {
+                successMessage.classList.remove('is-hidden')
+                loading.classList.add('is-hidden')
+            }, 500)
+        }
+
+        function showErrorMessage(error) {
+            console.error('Error!', error.message)
+            setTimeout(() => {
+                errorMessage.classList.remove('is-hidden')
+                loading.classList.add('is-hidden')
+            }, 500)
+        }
+
+
+
+
+
+
+
+
+
+        //This span is used to measure the size of the textarea
+        //it should have the same font and text with the textarea and should be hidden
+        var span = $('<span>').css('display', 'inline-block')
+            .css('word-break', 'break-all')
+            .appendTo('body').css('visibility', 'hidden');
+
+        function initSpan(textarea) {
+            span.text(textarea.text())
+                .width(textarea.width())
+                .css('font', textarea.css('font'));
+        }
+        $('textarea').on({
+            input: function() {
+                var text = $(this).val();
+                span.text(text);
+                $(this).height(text ? span.height() : '1.1em');
+            },
+            focus: function() {
+                initSpan($(this));
+            },
+            keypress: function(e) {
+                //cancel the Enter keystroke, otherwise a new line will be created
+                //This ensures the correct behavior when user types Enter 
+                //into an input field
+                if (e.which == 13) e.preventDefault();
+            }
+        });
+
+    </script>
+
+
+
+
+
+
+
+
+
+</body>
+
+
+
+
+
+
+
+
+
+</html>
